@@ -1,1 +1,1 @@
-# Credentials
+require "credentials/inflector"
