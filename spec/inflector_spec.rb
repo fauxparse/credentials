@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/spec_helper'
 
-describe "Infector" do
+describe "Inflector" do
   test_cases = [
     %w(act actor),
     %w(view viewer),
@@ -16,7 +16,8 @@ describe "Infector" do
     %w(perform performer),
     %w(choose chooser),
     %w(manufacture manufacturer),
-    %w(authorise authority)
+    %w(authorise authority),
+    %w(create creator)
   ]
   
   test_cases.each do |verb, noun|

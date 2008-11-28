@@ -33,6 +33,7 @@ String.send :include, Credentials::StringExtensions
 ActiveSupport::Inflector.inflections do |inflect|
   inflect.actor(/$/, 'er')
   inflect.actor(/e$/, 'er')
+  inflect.actor(/ate$/, 'ator')
   inflect.actor(/([^aeiou])([aeiou])([^aeioux])$/, '\1\2\3\3er')
   inflect.actor(/ct$/, 'ctor')
   inflect.actor(/^(improvi[sz])e$/, '\1or')
