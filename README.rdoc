@@ -1,0 +1,10 @@
+= Credentials
+
+Generic actor/resource permission framework.
+
+
+== Resources
+
+* http://fauxparse.lighthouseapp.com/projects/20753-credentials/
+
+Copyright (c) 2008 Matt Powell, released under the MIT license
