@@ -1,5 +1,8 @@
 module Credentials
   module ClassMethods
+    # Defines the set of credentials common to members of a class.
+    #--
+    # TODO merge options properly in subclasses instead of overwriting
     def has_credentials(options = {}, &block)
       unless included_modules.include? Actor
         write_inheritable_attribute :credentials, []
