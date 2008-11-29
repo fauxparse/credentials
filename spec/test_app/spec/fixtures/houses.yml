@@ -1,0 +1,19 @@
+gryffindor:
+  name: Gryffindor
+  head: mcgonagall
+  school: hogwarts
+  
+ravenclaw:
+  name: Ravenclaw
+  head: flitwick
+  school: hogwarts
+  
+hufflepuff:
+  name: Hufflepuff
+  head: sprout
+  school: hogwarts
+  
+slytherin:
+  name: Slytherin
+  head: snape
+  school: hogwarts
