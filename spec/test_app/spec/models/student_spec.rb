@@ -18,4 +18,8 @@ describe Student do
   it "should not be able to teach" do
     users(:harry).should_not be_able_to(:teach)
   end
+
+  it "should not be allowed to stay and fight if they are underage" do
+    Student.new(:name => "Colin Creevey").should_not be_able_to(:stay_and_fight)
+  end
 end

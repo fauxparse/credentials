@@ -5,7 +5,7 @@ module Credentials
       @verb = verb
       @conditions = args || []
       @block = block if block_given?
-      [ @block, @options[:if], @options[:unless] ].compact.each do |fn|
+      [ @block, @options[:if], @options[:unless] ].compact.select { |fn| fn.is_a? Proc }.each do |fn|
         raise ArgumentError, "block should take #{args.size + 1} argument#{'s' unless args.empty?}" unless fn.arity == args.size + 1
       end
     end
