@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
-describe User do
+describe Student do
   fixtures :users
   
   it "should be able to breathe" do
@@ -13,5 +13,9 @@ describe User do
 
   it "should not be able to apparate within the grounds" do
     users(:harry).should_not be_able_to(:apparate, "Hogwarts")
+  end
+  
+  it "should not be able to teach" do
+    users(:harry).should_not be_able_to(:teach)
   end
 end
