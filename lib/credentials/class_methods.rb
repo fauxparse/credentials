@@ -3,13 +3,14 @@ module Credentials
     # Defines the set of credentials common to members of a class.
     def credentials(options = {}, &block)
       unless included_modules.include? Actor
-        write_inheritable_attribute :allowed_credentials, []
-        class_inheritable_reader :allowed_credentials
+        class_inheritable_reader :rulebook
         class_inheritable_reader :credential_options
         include Actor
       end
       write_inheritable_attribute :credential_options, merge_credential_options(read_inheritable_attribute(:credential_options), options)
-      instance_eval &block if block_given?
+      old_rulebook = read_inheritable_attribute(:rulebook)
+      write_inheritable_attribute :rulebook, Rulebook.new(self, old_rulebook ? old_rulebook.rules : [])
+      yield rulebook if block_given?
     end
     
   protected

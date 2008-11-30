@@ -3,9 +3,9 @@ class User < ActiveRecord::Base
   belongs_to :house
   has_and_belongs_to_many :groups
   
-  credentials do
-    can :breathe
-    can :apparate, :location, :unless => lambda { |user, location| location.to_s =~ /^Hogwarts/ }
+  credentials do |user|
+    user.can :breathe
+    user.can :apparate, :location, :unless => lambda { |user, location| location.to_s =~ /^Hogwarts/ }
   end
   
   alias_attribute :to_s, :name

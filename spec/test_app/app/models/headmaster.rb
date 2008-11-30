@@ -1,5 +1,5 @@
-class Headmaster < User
-  credentials do
-    
+class Headmaster < Teacher
+  credentials do |headmaster|
+
   end
 end

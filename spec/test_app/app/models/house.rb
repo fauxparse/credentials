@@ -3,7 +3,7 @@ class House < ActiveRecord::Base
   has_many :students
   belongs_to :school
   
-  credentials do
-    can(:go_crying_to, Teacher) { |house, teacher| teacher == house.head }
+  credentials do |house|
+    house.can :go_crying_to, Teacher, :if => lambda { |house, teacher| teacher == house.head }
   end
 end
