@@ -37,3 +37,8 @@ dumbledore:
   name: Albus Dumbledore
   type: Headmaster
   school: hogwarts
+
+karkaroff:
+  name: Igor Karkaroff
+  type: Headmaster
+  school: durmstrang

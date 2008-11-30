@@ -36,6 +36,10 @@ describe Teacher do
     it "should not be able to punish Harry Potter" do
       users(:snape).should_not be_able_to(:punish, users(:harry))
     end
+    
+    it "should not be able to expel Harry Potter" do
+      users(:snape).should_not be_able_to(:expel, users(:harry))
+    end
   end
   
   describe "(Minerva McGonagall)" do
@@ -45,6 +49,10 @@ describe Teacher do
     
     it "should be able to punish Harry Potter" do
       users(:mcgonagall).should be_able_to(:punish, users(:harry))
+    end
+    
+    it "should not be able to expel Harry Potter" do
+      users(:mcgonagall).should_not be_able_to(:expel, users(:harry))
     end
   end
 end
