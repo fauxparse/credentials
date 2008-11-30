@@ -13,14 +13,14 @@ module Credentials
     module ClassMethods
       # Returns true if the given <tt>actor</tt> has permission to perform the action ‘<tt>verb</tt>’ with the given <tt>args</tt>.
       def can?(actor, verb, *args)
-        self.credentials.any? { |credential| credential.allow?(actor, verb, *args) } ||
+        self.allowed_credentials.any? { |credential| credential.allow?(actor, verb, *args) } ||
         can_by_association?(actor, verb, *args) ||
         can_by_actor_group?(actor, verb, *args)
       end
       
       # Declaratively sets a class-level permission for <tt>verb</tt>ing the given <tt>args</tt>.
       def can(verb, *args, &block)
-        self.credentials << Credential.new(verb, *args, &block)
+        self.allowed_credentials << Credential.new(verb, *args, &block)
       end
 
       # Returns true if any magic methods give the requested permission.
@@ -52,7 +52,7 @@ module Credentials
       # Returns a list of the groups the user belongs to, according to the <tt>:groups</tt> option to <tt>has_credentials</tt>.
       def groups_for(actor)
         case true
-        when !credentials_options[:groups].blank? then Array(credentials_options[:groups]).map(&:to_sym).collect { |g| actor.send(g) }.flatten.uniq
+        when !credential_options[:groups].blank? then Array(credential_options[:groups]).map(&:to_sym).collect { |g| actor.send(g) }.flatten.uniq
         when actor.respond_to?(:groups) then actor.groups.flatten.uniq
         else []
         end

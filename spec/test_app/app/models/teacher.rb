@@ -1,5 +1,5 @@
 class Teacher < User
-  has_credentials do
+  credentials do
     can :teach
     can(:punish, Student) { |teacher, student| teacher == student.house.head }
   end

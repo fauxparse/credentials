@@ -1,5 +1,5 @@
 class Headmaster < User
-  has_credentials do
+  credentials do
     
   end
 end
