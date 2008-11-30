@@ -38,4 +38,5 @@ ActiveSupport::Inflector.inflections do |inflect|
   inflect.actor(/ct$/, 'ctor')
   inflect.actor(/^(improvi[sz])e$/, '\1or')
   inflect.actor(/^(authori)[sz]e$/, '\1ty')
+  inflect.actor(/^administer$/, 'administrator')
 end
