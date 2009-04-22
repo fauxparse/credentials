@@ -1,7 +1,6 @@
 = Credentials
 
 * http://github.com/fauxparse/credentials
-* http://fauxparse.lighthouseapp.com/projects/20753-credentials/
 
 == Description
 
