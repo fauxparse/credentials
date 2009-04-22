@@ -1,3 +1,16 @@
+# -*- ruby -*-
+
+require 'rubygems'
+require 'hoe'
+require './lib/credentials.rb'
+
+Hoe.new('credentials', Credentials::VERSION) do |p|
+  # p.rubyforge_name = 'credentialsx' # if different than lowercase project name
+  p.developer('Matt Powell', 'fauxparse@gmail.com')
+end
+
+# vim: syntax=Ruby
+
 require 'rake'
 require 'spec/rake/spectask'
 require 'rcov/rcovtask'

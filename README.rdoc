@@ -1,10 +1,117 @@
 = Credentials
 
-Generic actor/resource permission framework.
-
-
-== Resources
-
+* http://github.com/fauxparse/credentials
 * http://fauxparse.lighthouseapp.com/projects/20753-credentials/
 
-Copyright (c) 2008 Matt Powell, released under the MIT license
+== Description
+
+A generic actor/resource permission framework.
+
+== Installation
+
+* +sudo gem install fauxparse-credentials --source=http://gems.github.com+
+
+== Examples
+
+  class User
+    credentials do |user|
+      # Users should only be able to edit their own details...
+    	user.can :edit, User, :if => lambda { |a, b| if a == b }
+    	
+    	# ...unless they are administrators!
+    	user.can :edit, User, :if => :admin?
+    end
+  end
+  
+  a = User.new
+  b = User.new :admin => true
+  a.can_edit?(a) #=> true
+  a.can_edit?(b) #=> false
+  b.can_edit?(b) #=> true
+  b.can_edit?(a) #=> true
+	
+Check out the example application (in +spec/test_app+) for more (completely
+frivolous) examples.
+
+== Philosophy
+
+Credentials is NOT a role-based permission system. Permissions are based
+on code, not on database objects. That said, there's nothing to stop you
+from doing something like this:
+
+  class User
+		has_and_belongs_to_many :roles
+		
+		credentials do |user|
+			user.can :access, :admin_pages, :if => :admin?
+		end
+		
+		def admin?
+			!roles.find_by_name("admin").nil?
+		end
+	end
+	
+I just figured there were dozens of systems out there for implementing
+role-based permissions, and everyone likes to do it differently, so I
+wouldn't reinvent the wheel. Instead, I wanted to focus on capturing
+the logic behind permissions, and avoid having to grant individual
+permissions for things that should be implemented algorithmically.
+
+For example, say you want to allow users to edit user profiles under
+the following rules:
+
+* Users can edit their own profile
+* Admin users can edit any profile
+* Selected users can edit selected other individual profiles
+
+Ordinarily, that's three separate checks: sure, I can bundle these up
+into a method on my User object, but the controller still needs to call
+that method and take appropriate action if it's not satisfied.
+
+With Credentials, I can write one method in my ApplicationController,
+and then do this:
+
+	class UsersController
+  	def update
+			@user = User.find params[:id]
+			requires_permission_to :edit, @user
+			@user.update_attributes params[:user]
+			# ...
+		end
+	end
+
+The +requires_permission_to+ method would call +current_user.can?(:edit, @user)+,
+and, if appropriate, raise an exception which would get handled by Rails
+and turned into a nice pretty error page.
+
+== To do
+
+* The test application is largely overkill. It does a half-decent job
+  of testing the functionality of the library, but I'd like to rewrite
+  it into a proper test suite.
+* Proper documentation of the API. It's been a while since I touched this.
+* Better support for groups would make integration with RBA systems easier.
+* Deny permissions (+cannot+).
+
+== License
+
+Copyright (c) 2009 Matt Powell (fauxparse@gmail.com)
+
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+'Software'), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
