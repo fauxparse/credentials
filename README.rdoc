@@ -9,17 +9,17 @@ A generic actor/resource permission framework.
 
 == Installation
 
-* +sudo gem install fauxparse-credentials --source=http://gems.github.com+
+* <tt>sudo gem install fauxparse-credentials --source=http://gems.github.com</tt>
 
 == Examples
 
   class User
     credentials do |user|
       # Users should only be able to edit their own details...
-    	user.can :edit, User, :if => lambda { |a, b| if a == b }
-    	
-    	# ...unless they are administrators!
-    	user.can :edit, User, :if => :admin?
+      user.can :edit, User, :if => lambda { |a, b| if a == b }
+      
+      # ...unless they are administrators!
+      user.can :edit, User, :if => :admin?
     end
   end
   
@@ -29,7 +29,7 @@ A generic actor/resource permission framework.
   a.can_edit?(b) #=> false
   b.can_edit?(b) #=> true
   b.can_edit?(a) #=> true
-	
+  
 Check out the example application (in +spec/test_app+) for more (completely
 frivolous) examples.
 
@@ -40,17 +40,17 @@ on code, not on database objects. That said, there's nothing to stop you
 from doing something like this:
 
   class User
-		has_and_belongs_to_many :roles
-		
-		credentials do |user|
-			user.can :access, :admin_pages, :if => :admin?
-		end
-		
-		def admin?
-			!roles.find_by_name("admin").nil?
-		end
-	end
-	
+    has_and_belongs_to_many :roles
+    
+    credentials do |user|
+      user.can :access, :admin_pages, :if => :admin?
+    end
+    
+    def admin?
+      !roles.find_by_name("admin").nil?
+    end
+  end
+  
 I just figured there were dozens of systems out there for implementing
 role-based permissions, and everyone likes to do it differently, so I
 wouldn't reinvent the wheel. Instead, I wanted to focus on capturing
@@ -71,16 +71,16 @@ that method and take appropriate action if it's not satisfied.
 With Credentials, I can write one method in my ApplicationController,
 and then do this:
 
-	class UsersController
-  	def update
-			@user = User.find params[:id]
-			requires_permission_to :edit, @user
-			@user.update_attributes params[:user]
-			# ...
-		end
-	end
+  class UsersController
+    def update
+      @user = User.find params[:id]
+      requires_permission_to :edit, @user
+      @user.update_attributes params[:user]
+      # ...
+    end
+  end
 
-The +requires_permission_to+ method would call +current_user.can?(:edit, @user)+,
+The +requires_permission_to+ method would call <tt>current_user.can?(:edit, @user)</tt>,
 and, if appropriate, raise an exception which would get handled by Rails
 and turned into a nice pretty error page.
 
