@@ -1,3 +1,10 @@
+=== 1.0.1 / 2009-04-23
+
+* Now sort of framework-agnostic. I say "sort of", because what I've actually
+  done is just copy and paste the chunks I needed out of ActiveSupport. I guess
+  the goal would be to rewrite around these, but since I basically never need
+  this for anything except Rails, it seems like overkill.
+
 === 1.0.0 / 2009-04-23
 
 * Gemification and README
