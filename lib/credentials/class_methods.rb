@@ -23,5 +23,3 @@ module Credentials
     end
   end
 end
-
-ActiveRecord::Base.send :extend, Credentials::ClassMethods

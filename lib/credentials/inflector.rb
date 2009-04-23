@@ -26,17 +26,19 @@ module Credentials
   end
 end
 
-ActiveSupport::Inflector.send :extend, Credentials::Inflector
-ActiveSupport::Inflector::Inflections.send :include, Credentials::Inflections
-String.send :include, Credentials::StringExtensions
+if defined?(ActiveSupport)
+  ActiveSupport::Inflector.send :extend, Credentials::Inflector
+  ActiveSupport::Inflector::Inflections.send :include, Credentials::Inflections
+  String.send :include, Credentials::StringExtensions
 
-ActiveSupport::Inflector.inflections do |inflect|
-  inflect.actor(/$/, 'er')
-  inflect.actor(/e$/, 'er')
-  inflect.actor(/ate$/, 'ator')
-  inflect.actor(/([^aeiou])([aeiou])([^aeioux])$/, '\1\2\3\3er')
-  inflect.actor(/ct$/, 'ctor')
-  inflect.actor(/^(improvi[sz])e$/, '\1or')
-  inflect.actor(/^(authori)[sz]e$/, '\1ty')
-  inflect.actor(/^administer$/, 'administrator')
+  ActiveSupport::Inflector.inflections do |inflect|
+    inflect.actor(/$/, 'er')
+    inflect.actor(/e$/, 'er')
+    inflect.actor(/ate$/, 'ator')
+    inflect.actor(/([^aeiou])([aeiou])([^aeioux])$/, '\1\2\3\3er')
+    inflect.actor(/ct$/, 'ctor')
+    inflect.actor(/^(improvi[sz])e$/, '\1or')
+    inflect.actor(/^(authori)[sz]e$/, '\1ty')
+    inflect.actor(/^administer$/, 'administrator')
+  end
 end
