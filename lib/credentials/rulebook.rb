@@ -8,11 +8,11 @@ module Credentials
     end
     
     def can(verb, *args)
-      @rules << Rules::Can.new(@klass, verb, *args)
+      @rules << Credentials::Rules::Can.new(@klass, verb, *args)
     end
     
     def cannot(verb, *args)
-      @rules << Rules::Cannot.new(@klass, verb, *args)
+      @rules << Credentials::Rules::Cannot.new(@klass, verb, *args)
     end
     
     def can?(actor, verb, *args)

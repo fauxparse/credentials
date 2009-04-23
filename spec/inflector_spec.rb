@@ -1,4 +1,6 @@
-require File.dirname(__FILE__) + '/spec_helper'
+$: << File.dirname(__FILE__) + "/../lib"
+require "credentials"
+require "spec"
 
 describe "Inflector" do
   test_cases = [
