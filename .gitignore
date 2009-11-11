@@ -1,3 +1,2 @@
-spec/debug.log
-rcov
 credentials-*.gem
+coverage

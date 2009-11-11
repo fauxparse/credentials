@@ -1,27 +1,64 @@
+require "credentials/rule"
+require "credentials/allow_rule"
+require "credentials/deny_rule"
+
 module Credentials
   class Rulebook
-    attr_reader :rules
+    attr_accessor :klass
+    attr_accessor :options
+    attr_accessor :rules
     
-    def initialize(klass, rules = [])
-      @rules = rules
-      @klass = klass
+    DEFAULT_OPTIONS = {
+      :default => :deny
+    }.freeze
+    
+    def initialize(klass)
+      self.klass = klass
+      @rules = []
+      @options = {}
     end
-    
-    def can(verb, *args)
-      @rules << Credentials::Rules::Can.new(@klass, verb, *args)
-    end
-    
-    def cannot(verb, *args)
-      @rules << Credentials::Rules::Cannot.new(@klass, verb, *args)
-    end
-    
-    def can?(actor, verb, *args)
-      result = @klass.credential_options[:allow_by_default] || false
-      @rules.each do |rule|
-        result = true if rule.allow?(actor, verb, *args)
-        result = false if rule.deny?(actor, verb, *args)
+
+    def self.for(klass)
+      rulebook = new(klass)
+      if superclass && superclass.respond_to?(:credentials)
+        rulebook.rules = superclass.credentials.rules.dup
       end
-      result
+      rulebook
+    end
+
+    def empty?
+      rules.empty?
+    end
+    
+    def can(*args)
+      self.rules << AllowRule.new(klass, *args)
+    end
+    
+    def cannot(*args)
+      self.rules << DenyRule.new(klass, *args)
+    end
+    
+    def default
+      options[:default] && options[:default].to_sym
+    end
+    
+    def allow?(*args)
+      allowed = allow_rules.inject(false) { |memo, rule| memo || rule.allow?(*args) }
+      denied = deny_rules.inject(false) { |memo, rule| memo || rule.deny?(*args) }
+      
+      if default == :allow
+        allowed or !denied
+      else
+        allowed and !denied
+      end
+    end
+    
+    def allow_rules
+      rules.select { |rule| rule.respond_to? :allow? }
+    end
+    
+    def deny_rules
+      rules.select { |rule| rule.respond_to? :deny? }
     end
   end
 end
