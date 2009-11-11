@@ -14,6 +14,20 @@ describe Animal do
   it "shouldn't be able to do anything without explicit permission" do
     @cow.should_not be_able_to :jump, "Moon"
   end
+  
+  it "should be able to clean itself" do
+    @sheep.should be_able_to :clean, @sheep
+  end
+  
+  it "should not be able to clean another animal" do
+    @sheep.should_not be_able_to :clean, @cow
+  end
+  
+  it "should have magic methods for permissions" do
+    lambda {
+      @sheep.can_eat?(@cow).should == false
+    }.should_not raise_error
+  end
 end
 
 describe Carnivore do
@@ -72,6 +86,17 @@ describe Carnivore do
     it "should be able to eat a bird" do
       @lion.should be_able_to :eat, @toucan
     end
+  end
+end
+
+describe Bird do
+  before :each do
+    @toucan = Bird.new("Toucan")
+    @crocodile = Carnivore.new("Crocodile")
+  end
+  
+  it "should be able to clean another animal" do
+    @toucan.should be_able_to :clean, @crocodile
   end
 end
 

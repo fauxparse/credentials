@@ -16,7 +16,10 @@ module Credentials
       return false unless arity == args.length
       
       parameters.zip(args).each do |expected, actual|
-        return false unless expected === actual
+        case expected
+        when :self then return false unless actual == args.first
+        else return false unless expected === actual
+        end
       end
       result = true
       result = result && evaluate_condition(options[:if], :|, *args) unless options[:if].nil?

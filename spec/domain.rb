@@ -1,5 +1,6 @@
 class Animal < Struct.new(:species, :hungry, :fast)
   credentials do |animal|
+    animal.can :clean, :self
   end
   
   def edible?
@@ -22,7 +23,9 @@ class Prey < Animal
 end
 
 class Bird < Prey
-  
+  credentials do |bird|
+    bird.can :clean, Animal # they are good like that
+  end
 end
 
 class Carnivore < Animal
@@ -35,7 +38,6 @@ end
 
 class Man < Animal
   credentials :default => :allow do |man|
-
   end
 end
 
