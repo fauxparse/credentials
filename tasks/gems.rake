@@ -9,7 +9,6 @@ begin
     gemspec.description = "A generic actor/resource permission framework based on rules, not objects."  
     gemspec.email = "fauxparse@gmail.com.com"  
     gemspec.homepage = "http://github.com/fauxparse/credentials"  
-    gemspec.description = "TODO"  
     gemspec.authors = ["Matt Powell"]  
   end
   Jeweler::GemcutterTasks.new
