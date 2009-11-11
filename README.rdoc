@@ -8,7 +8,7 @@ A generic actor/resource permission framework.
 
 == Installation
 
-* <tt>sudo gem install fauxparse-credentials --source=http://gems.github.com</tt>
+* <tt>sudo gem install credentials</tt>
 
 == Examples
 
@@ -29,9 +29,6 @@ A generic actor/resource permission framework.
   b.can_edit?(b) #=> true
   b.can_edit?(a) #=> true
   
-Check out the example application (in +spec/test_app+) for more (completely
-frivolous) examples.
-
 == Philosophy
 
 Credentials is NOT a role-based permission system. Permissions are based
@@ -85,12 +82,8 @@ and turned into a nice pretty error page.
 
 == To do
 
-* The test application is largely overkill. It does a half-decent job
-  of testing the functionality of the library, but I'd like to rewrite
-  it into a proper test suite.
-* Proper documentation of the API. It's been a while since I touched this.
+* Proper documentation of the API.
 * Better support for groups would make integration with RBA systems easier.
-* Deny permissions (+cannot+).
 
 == License
 
