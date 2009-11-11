@@ -19,15 +19,27 @@ module Credentials
     end
     
     module InstanceMethods
+      # Returns true if the receiver has access to the specified resource or action.
       def can?(*args)
         self.class.credentials.allow? self, *args
       end
       alias_method :able_to?, :can?
+
+      def method_missing_with_credentials(sym, *args)
+        if sym.to_s =~ /\Acan_(.*)\?\z/
+          can? $1.to_sym, *args
+        else
+          method_missing_without_credentials sym, *args
+        end
+      end
     end
     
     def self.included(receiver) #:nodoc
       receiver.extend         ClassMethods
       receiver.send :include, InstanceMethods
+
+      receiver.send :alias_method, :method_missing_without_credentials, :method_missing
+      receiver.send :alias_method, :method_missing, :method_missing_with_credentials
       
       class << receiver
         alias_method :inherited_without_credentials, :inherited if respond_to? :inherited
