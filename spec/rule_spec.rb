@@ -15,11 +15,19 @@ describe Credentials::AllowRule do
     lion = Carnivore.new("lion")
     Credentials::AllowRule.new(Carnivore, :eat, Prey).allow?(lion, :eat, antelope).should == true
   end
+  
+  it "should throw an error when it gets bad arguments" do
+    lambda {
+      lion = Carnivore.new("lion")
+      rule = Credentials::AllowRule.new(Animal, :jump, :if => Date.civil(2010, 4, 1))
+      rule.match?(lion, :jump)
+    }.should raise_error(ArgumentError)
+  end
 end
 
-describe Credentials::AllowRule do
+describe Credentials::DenyRule do
   it "should have the correct arity" do
-    Credentials::AllowRule.new(Animal, :jump).arity.should == 2
+    Credentials::DenyRule.new(Animal, :jump).arity.should == 2
   end
   
   it "should match the simple case" do

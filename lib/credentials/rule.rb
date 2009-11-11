@@ -36,7 +36,7 @@ module Credentials
           raise ArgumentError, "wrong number of arguments to condition (#{args.size} to #{condition.arity})" unless args.size + 1 == condition.arity
           !!condition.call(receiver, *args)
         else
-          !!condition
+          raise ArgumentError, "invalid :if or :unless option (expected Symbol or Proc, or array thereof; got #{condition.class})"
         end
       end
     end
