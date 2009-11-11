@@ -1,17 +1,99 @@
 require File.dirname(__FILE__) + '/spec_helper'
+require "time"
 
 describe "Animal" do
+  before :each do
+    @sheep = Animal.new("Sheep")
+    @cow = Animal.new("Cow")
+  end
+
   it "should not be able to eat other animals" do
-    sheep = Animal.new("Sheep")
-    cow = Animal.new("Cow")
-    sheep.should_not be_able_to :eat, cow
+    @sheep.should_not be_able_to :eat, @cow
+  end
+  
+  it "shouldn't be able to do anything without explicit permission" do
+    @cow.should_not be_able_to :jump, "Moon"
   end
 end
 
 describe "Carnivore" do
-  it "should be able to eat another animal" do
-    lion = Carnivore.new("Lion")
-    antelope = Prey.new("Antelope")
-    lion.should be_able_to :eat, antelope
+  before :each do
+    @antelope = Prey.new("Antelope")
+    @toucan = Bird.new("Toucan")
+  end
+  
+  describe "(lazy)" do
+    before :each do
+      @lion = Carnivore.new("Lion")
+    end
+
+    it "should not be able to eat another animal" do
+      @lion.should_not be_able_to :eat, @antelope
+    end
+  end
+  
+  describe "(hungry)" do
+    before :each do
+      @lion = Carnivore.new("Lion", true)
+    end
+
+    it "should be able to eat another animal" do
+      @lion.should be_able_to :eat, @antelope
+    end
+    
+    it "should not be able to eat a bird" do
+      @lion.should_not be_able_to :eat, @toucan
+    end
+  end
+  
+  describe "(fast)" do
+    before :each do
+      @lion = Carnivore.new("Lion", false, true)
+    end
+
+    it "should not be able to eat another animal" do
+      @lion.should_not be_able_to :eat, @antelope
+    end
+    
+    it "should not be able to eat a bird" do
+      @lion.should_not be_able_to :eat, @toucan
+    end
+  end
+  
+  describe "(hungry AND fast)" do
+    before :each do
+      @lion = Carnivore.new("Lion", true, true)
+    end
+
+    it "should be able to eat another animal" do
+      @lion.should be_able_to :eat, @antelope
+    end
+    
+    it "should be able to eat a bird" do
+      @lion.should be_able_to :eat, @toucan
+    end
   end
 end
+
+describe Man do
+  before :each do
+    @man = Man.new
+  end
+  
+  it "should be able to do anything it wants" do
+    @man.should be_able_to :do_a_cartwheel
+    @man.should be_able_to :eat, "ice cream"
+    @man.should be_able_to :stay, :up, :past, Time.parse("10:00")
+  end
+end
+
+describe WhiteMan do
+  before :each do
+    @white_man = WhiteMan.new
+  end
+  
+  it "can't jump (sorry)" do
+    @white_man.should_not be_able_to :jump
+  end
+end
+
