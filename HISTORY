@@ -1,3 +1,15 @@
+=== 2.1.0 / 2009-11-12
+
+* Added support for :self
+* Added array arguments to +can+ and +cannot+
+* Put in masses of RDoc
+* Added magic method support back in
+
+=== 2.0.0 / 2009-11-11
+
+* Rewritten from first principles! Faster, smarter, leaner and with more
+  features than you can shake a very light stick at.
+
 === 1.0.1 / 2009-04-23
 
 * Now sort of framework-agnostic. I say "sort of", because what I've actually

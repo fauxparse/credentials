@@ -6,7 +6,7 @@ end
 
 desc 'Generate RDoc documentation.'
 Rake::RDocTask.new(:rdoc) do |rdoc|
-  rdoc.rdoc_files.include('README.rdoc', 'LICENSE').
+  rdoc.rdoc_files.include('README.rdoc', 'LICENSE', 'HISTORY').
     include('lib/**/*.rb')
 
   rdoc.main = "README.rdoc" # page to start on
