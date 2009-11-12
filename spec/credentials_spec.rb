@@ -28,6 +28,12 @@ describe Animal do
       @sheep.can_eat?(@cow).should == false
     }.should_not raise_error
   end
+  
+  it "should still do normal method_missing stuff" do
+    lambda {
+      @sheep.foo
+    }.should raise_error
+  end
 end
 
 describe Carnivore do
