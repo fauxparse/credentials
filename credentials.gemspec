@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{credentials}
-  s.version = "2.0.0"
+  s.version = "2.1.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Matt Powell"]
-  s.date = %q{2009-11-11}
+  s.date = %q{2009-11-12}
   s.description = %q{A generic actor/resource permission framework based on rules, not objects.}
   s.email = %q{fauxparse@gmail.com.com}
   s.extra_rdoc_files = [
@@ -18,7 +18,7 @@ Gem::Specification.new do |s|
   ]
   s.files = [
     ".gitignore",
-     "History.txt",
+     "HISTORY",
      "LICENSE",
      "README.rdoc",
      "Rakefile",
@@ -39,6 +39,7 @@ Gem::Specification.new do |s|
      "spec/rulebook_spec.rb",
      "spec/spec_helper.rb",
      "tasks/gems.rake",
+     "tasks/rdoc.rake",
      "tasks/spec.rake",
      "tasks/stats.rake",
      "uninstall.rb"
