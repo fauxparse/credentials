@@ -18,6 +18,7 @@ module Credentials
       parameters.zip(args).each do |expected, actual|
         case expected
         when :self then return false unless actual == args.first
+        when Array then return false unless expected.any? { |item| (item === actual) || (item == :self && actual == args.first) }
         else return false unless expected === actual
         end
       end

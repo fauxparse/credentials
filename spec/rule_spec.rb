@@ -23,6 +23,14 @@ describe Credentials::AllowRule do
       rule.match?(lion, :jump)
     }.should raise_error(ArgumentError)
   end
+  
+  it "should match with an array" do
+    rule = Credentials::AllowRule.new Animal, :bite, [ :self, Prey ]
+    lion = Carnivore.new("lion")
+    antelope = Prey.new("antelope")
+    rule.should be_match(lion, :bite, antelope)
+    rule.should be_match(lion, :bite, lion)
+  end
 end
 
 describe Credentials::DenyRule do
