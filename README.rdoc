@@ -82,7 +82,6 @@ and turned into a nice pretty error page.
 
 == To do
 
-* Proper documentation of the API.
 * Better support for groups would make integration with RBA systems easier.
 
 == License
