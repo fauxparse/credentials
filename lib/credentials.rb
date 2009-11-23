@@ -1,4 +1,4 @@
 require "credentials/rulebook"
-require "credentials/object_extensions"
+require "credentials/extensions/object"
 
-Object.send :include, Credentials::ObjectExtensions
+Object.send :include, Credentials::Extensions::Object
