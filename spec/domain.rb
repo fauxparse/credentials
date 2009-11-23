@@ -1,6 +1,14 @@
-class Animal < Struct.new(:species, :hungry, :fast)
+class Animal
   credentials do |animal|
     animal.can :clean, :self
+  end
+  
+  attr_accessor :species, :hungry, :fast
+  
+  def initialize(species = nil, hungry = false, fast = false)
+    @species = species
+    @hungry = hungry
+    @fast = fast
   end
   
   def edible?
