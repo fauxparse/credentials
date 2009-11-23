@@ -38,7 +38,7 @@ namespace :spec do
     t.spec_opts = ['--colour --format progress --loadby mtime --reverse']
     t.spec_files = FileList['spec/**/*_spec.rb']
     t.rcov = true
-    t.rcov_opts = ['--text-report --exclude "spec/*"']
+    t.rcov_opts = ['--text-report --rails --exclude "spec/*,application_controller.rb,application_helper.rb"']
   end
 end
 
