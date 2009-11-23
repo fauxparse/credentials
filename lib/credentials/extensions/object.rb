@@ -1,6 +1,6 @@
 module Credentials
   module Extensions #:nodoc:
-    module Object #:nodoc:
+    module Object
       module ClassMethods
         # The main method for specifying and retrieving the permissions of
         # a member of this class.
@@ -73,7 +73,7 @@ module Credentials
         end
       end
     
-      def self.included(receiver) #:nodoc
+      def self.included(receiver) #:nodoc:
         receiver.extend ClassMethods
 
         receiver.send :alias_method, :method_missing_without_credentials, :method_missing

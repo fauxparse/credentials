@@ -83,10 +83,17 @@ describe TestController do
       controller.should_receive(:logged_in_user).and_return(nil)
     end
     
-    it "should raise an exception" do
+    it "should not have access to stuff" do
       lambda {
         get :index
       }.should raise_error(Credentials::Errors::NotLoggedInError)
+    end
+    
+    it "should have access to public stuff" do
+      lambda {
+        get :public
+        response.should be_success
+      }.should_not raise_error(Credentials::Errors::AccessDeniedError)
     end
   end
 end
