@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{credentials}
-  s.version = "2.2.1"
+  s.version = "2.2.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Matt Powell"]
-  s.date = %q{2009-11-24}
+  s.date = %q{2009-11-25}
   s.description = %q{A generic actor/resource permission framework based on rules, not objects.}
   s.email = %q{fauxparse@gmail.com.com}
   s.extra_rdoc_files = [
@@ -32,6 +32,7 @@ Gem::Specification.new do |s|
      "lib/credentials/errors.rb",
      "lib/credentials/extensions/action_controller.rb",
      "lib/credentials/extensions/configuration.rb",
+     "lib/credentials/extensions/magic_methods.rb",
      "lib/credentials/extensions/object.rb",
      "lib/credentials/rule.rb",
      "lib/credentials/rulebook.rb",
