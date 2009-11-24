@@ -35,6 +35,13 @@ module Credentials
           @credentials ||= Credentials::Rulebook.new(self)
           if block_given?
             @credentials.options.merge!(options) unless options.nil?
+            
+            # Only include the magic methods for classes where 'credentials' is
+            # explicitly called with a block: otherwise, you get all kinds of 
+            # RailsFails.
+            unless included_modules.include?(Credentials::Extensions::MagicMethods)
+              include Credentials::Extensions::MagicMethods 
+            end
             yield @credentials
           else
             raise ArgumentError, "you can only set options with a block" unless options.nil?
@@ -54,31 +61,9 @@ module Credentials
       end
       alias_method :able_to?, :can?
 
-      # Allows you to use magic methods to test permissions.
-      # For example:
-      #
-      #     class User
-      #       credentials do |user|
-      #         user.can :edit, :self
-      #       end
-      #     end
-      #     
-      #     user = User.new
-      #     user.can_edit? user #=> true
-      def method_missing_with_credentials(sym, *args)
-        if sym.to_s =~ /\Acan_(.*)\?\z/
-          can? $1.to_sym, *args
-        else
-          method_missing_without_credentials sym, *args
-        end
-      end
-    
       def self.included(receiver) #:nodoc:
         receiver.extend ClassMethods
 
-        receiver.send :alias_method, :method_missing_without_credentials, :method_missing
-        receiver.send :alias_method, :method_missing, :method_missing_with_credentials
-      
         class << receiver
           alias_method :inherited_without_credentials, :inherited if respond_to? :inherited
           alias_method :inherited, :inherited_with_credentials
