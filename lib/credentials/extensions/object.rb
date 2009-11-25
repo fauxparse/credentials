@@ -48,11 +48,6 @@ module Credentials
           end
           @credentials
         end
-      
-        # def inherited_with_credentials(child_class) #:nodoc:
-        #   inherited_without_credentials(child_class) if child_class.respond_to? :inherited_without_credentials
-        #   child_class.instance_variable_set("@credentials", Rulebook.for(child_class))
-        # end
       end
     
       # Returns true if the receiver has access to the specified resource or action.
