@@ -18,7 +18,7 @@ module Credentials
     
     def initialize(klass)
       self.klass = klass
-      @rules = if klass.superclass && !klass.superclass.credentials.empty?
+      @rules = if klass.superclass.respond_to?(:credentials) && !klass.superclass.credentials.empty?
         klass.superclass.credentials.rules.dup
       else
         []
