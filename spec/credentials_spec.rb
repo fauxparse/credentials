@@ -50,6 +50,10 @@ describe Carnivore do
     it "should not be able to eat another animal" do
       @lion.should_not be_able_to :eat, @antelope
     end
+    
+    it "should be able to clean itself" do
+      @lion.should be_able_to :clean, @lion
+    end
   end
   
   describe "(hungry)" do

@@ -63,11 +63,6 @@ module Credentials
 
       def self.included(receiver) #:nodoc:
         receiver.extend ClassMethods
-
-        class << receiver
-          alias_method :inherited_without_credentials, :inherited if respond_to? :inherited
-          alias_method :inherited, :inherited_with_credentials
-        end
       end
     end
   end
