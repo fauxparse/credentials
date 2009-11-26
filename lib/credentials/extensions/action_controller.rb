@@ -41,6 +41,11 @@ module Credentials
         #        @current_post ||= Post.find params[:id]
         #      end
         #    end
+        #
+        # Note that for this to work, the +current_post+ method
+        # must be declared +protected+. The reason for this is that
+        # otherwise Credentials would also try to evaluate the
+        # +edit+ method as an argument.
         def requires_permission_to(*args)
           options = (args.last.is_a?(Hash) ? args.pop : {}).with_indifferent_access
           %w(only except).each do |key|

@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{credentials}
-  s.version = "2.2.2"
+  s.version = "2.2.3"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Matt Powell"]
-  s.date = %q{2009-11-25}
+  s.date = %q{2009-11-27}
   s.description = %q{A generic actor/resource permission framework based on rules, not objects.}
   s.email = %q{fauxparse@gmail.com.com}
   s.extra_rdoc_files = [
