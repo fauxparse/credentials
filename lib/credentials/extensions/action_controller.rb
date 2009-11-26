@@ -77,7 +77,9 @@ module Credentials
           next if options[:except] && options[:except].include?(current_action)
 
           raise Credentials::Errors::NotLoggedInError unless current_user
-          evaluated = args.map { |arg| (arg.is_a?(Symbol) && respond_to?(arg)) ? send(arg) : arg }
+          evaluated = args.map do |arg|
+            (arg.is_a?(Symbol) && respond_to?(arg) && !public_methods.include?(arg.to_s)) ? send(arg) : arg
+          end
           
           unless current_user.can?(*evaluated)
             raise Credentials::Errors::AccessDeniedError
