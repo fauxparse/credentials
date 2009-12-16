@@ -5,10 +5,12 @@ if defined?(ActionController)
     self.current_user_method = :logged_in_user
     requires_permission_to :view, :stuff, :except => [ :public ]
     requires_permission_to :break, :stuff, :only => [ :dangerous ]
+    requires_permission_to :create, :stuff, :for => :account, :only => [ :create ]
   
     def index; end
     def public; end
     def dangerous; end
+    def create; end
   
     def rescue_action(e)
       raise e
@@ -19,9 +21,14 @@ if defined?(ActionController)
     credentials do |user|
       user.can :view, :stuff
       user.can :break, :stuff, :if => :special?
+      user.can :create, :stuff, :for => :account
+      
+      def account; end
     end
   end
-
+  
+  class TestAccount; end
+  
   describe TestController do
     it "should know how to specify access credentials" do
       controller.class.should respond_to(:requires_permission_to)
@@ -76,6 +83,27 @@ if defined?(ActionController)
             response.should_not be_success
           }.should raise_error(Credentials::Errors::AccessDeniedError)
         end
+      end
+
+      it "should be able to do stuff on its own account" do
+        @my_account = TestAccount.new
+        @user.stub!(:account).and_return(@my_account)
+        controller.stub!(:account).and_return(@my_account)
+        lambda {
+          get :create
+          response.should be_success
+        }.should_not raise_error(Credentials::Errors::AccessDeniedError)
+      end
+
+      it "should not be able to do stuff on someone else's account" do
+        @my_account = TestAccount.new
+        @your_account = TestAccount.new
+        @user.stub!(:account).and_return(@my_account)
+        controller.stub!(:account).and_return(@your_account)
+        lambda {
+          get :create
+          response.should_not be_success
+        }.should raise_error(Credentials::Errors::AccessDeniedError)
       end
     end
   

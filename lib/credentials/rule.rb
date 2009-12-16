@@ -33,7 +33,7 @@ module Credentials
     # match any element of that array:
     #     class User
     #       credentials do |user|
-    #         user.can :fight, [ :shatner, :gandhi ]
+    #         user.can [ :punch, :fight ], [ :shatner, :gandhi ]
     #       end
     #     end
     #     
@@ -50,7 +50,7 @@ module Credentials
       values = args.last.is_a?(Hash) ? args.pop : {}
       
       return false unless arity == args.length
-      
+
       parameters.zip(args).each do |expected, actual|
         case expected
         when :self then return false unless actual == args.first

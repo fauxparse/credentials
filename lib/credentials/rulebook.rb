@@ -123,6 +123,23 @@ module Credentials
     #         user.can :edit, :self
     #       end
     #     end
+    #
+    # == Prepositions (+:for+, +:on+, etc)
+    # You can do the following:
+    #     class User
+    #       credentials do |user|
+    #         user.can :delete, Comment, :on => :post
+    #       end
+    #     end
+    #
+    #     user.can? :delete, post.comments.first, :on => post
+    # ...means that Credentials will check if:
+    # * +post+ has a +user_id+ method matching +user.id+
+    # * +user+ has a +post_id+ method matching +post.id+
+    # * +user+ has a +post+ method matching +post+
+    # * +user+ has a +posts+ method that returns an array including +post+
+    #
+    # See Credentials::Prepositions for the list of available prepositions.
     def can(*args)
       self.rules << AllowRule.new(klass, *args)
     end

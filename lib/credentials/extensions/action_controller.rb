@@ -47,8 +47,8 @@ module Credentials
         # otherwise Credentials would also try to evaluate the
         # +edit+ method as an argument.
         def requires_permission_to(*args)
-          options = (args.last.is_a?(Hash) ? args.pop : {}).with_indifferent_access
-          %w(only except).each do |key|
+          options = (args.last.is_a?(Hash) ? args.pop : {})
+          [ :only, :except ].each do |key|
             options[key] = Array(options[key]).map(&:to_sym) if options[key]
           end
           self.required_credentials = self.required_credentials + [ [ options, args ] ]
@@ -80,11 +80,18 @@ module Credentials
         self.class.required_credentials.each do |options, args|
           next if options[:only] && !options[:only].include?(current_action)
           next if options[:except] && options[:except].include?(current_action)
-
+          
           raise Credentials::Errors::NotLoggedInError unless current_user
           evaluated = args.map do |arg|
             (arg.is_a?(Symbol) && respond_to?(arg) && !public_methods.include?(arg.to_s)) ? send(arg) : arg
           end
+          
+          opts = returning({}) do |hash|
+            (Credentials::Prepositions & options.keys).each do |prep|
+              hash[prep] = send(options[prep])
+            end
+          end
+          evaluated << opts
           
           unless current_user.can?(*evaluated)
             raise Credentials::Errors::AccessDeniedError

@@ -3,7 +3,7 @@ require "credentials/extensions/object"
 require "credentials/extensions/magic_methods"
 
 module Credentials
-  Prepositions = [ :on, :for, :with, :at, :in ].freeze
+  Prepositions = [ :on, :for, :with, :at, :in, :from ].freeze
 end
 
 Object.send :include, Credentials::Extensions::Object
