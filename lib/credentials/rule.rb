@@ -47,6 +47,8 @@ module Credentials
     #       end
     #     end
     def match?(*args)
+      values = args.last.is_a?(Hash) ? args.pop : {}
+      
       return false unless arity == args.length
       
       parameters.zip(args).each do |expected, actual|
@@ -56,7 +58,9 @@ module Credentials
         else return false unless expected === actual
         end
       end
+      
       result = true
+      result = result && (options.keys & Credentials::Prepositions).inject(true) { |memo, key| memo && evaluate_preposition(args.first, options[key], values[key]) }
       result = result && evaluate_condition(options[:if], :|, *args) unless options[:if].nil?
       result = result && !evaluate_condition(options[:unless], :&, *args) unless options[:unless].nil?
       result
@@ -83,6 +87,33 @@ module Credentials
           raise ArgumentError, "invalid :if or :unless option (expected Symbol or Proc, or array thereof; got #{condition.class})"
         end
       end
+    end
+
+    def evaluate_preposition(object, expected, actual)
+      return true if expected.nil?
+      return false if actual.nil?
+      return true if expected === actual
+      
+      single = expected.to_s
+      plural = single.respond_to?(:pluralize) ? single.pluralize : single + "s"
+      
+      lclass, rclass = [ object.class.name, actual.class.name ].map do |s|
+        s.gsub(/^.*::/, '').
+          gsub(/([A-Z]+)([A-Z][a-z])/,'\1_\2').
+          gsub(/([a-z\d])([A-Z])/,'\1_\2').
+          tr("-", "_").
+          downcase
+      end
+      
+      if object.respond_to?(:id) && actual.respond_to?(:"#{lclass}_id")
+        return true if actual.send(:"#{lclass}_id") == object.id
+      end
+      
+      if actual.respond_to?(:id) && object.respond_to?(:"#{rclass}_id")
+        return true if object.send(:"#{rclass}_id") == actual.id
+      end
+      
+      (object.respond_to?(single) && (object.send(single) == actual)) || (object.respond_to?(plural) && (object.send(plural).include?(actual)))
     end
   end
 end

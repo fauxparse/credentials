@@ -22,6 +22,14 @@ describe Animal do
   it "should not be able to clean another animal" do
     @sheep.should_not be_able_to :clean, @cow
   end
+
+  it "should be able to laugh at its friends" do
+    @dog = Animal.new("Dog")
+    @dog.friends = [ @cow ]
+    
+    @dog.should be_able_to :laugh, :at => @cow
+    @dog.should_not be_able_to :laugh, :at => @sheep
+  end
   
   it "should have magic methods for permissions" do
     lambda {
@@ -112,7 +120,7 @@ end
 
 describe Man do
   before :each do
-    @man = Man.new
+    @man = Man.new("Andrew")
   end
   
   it "should be able to do anything it wants" do

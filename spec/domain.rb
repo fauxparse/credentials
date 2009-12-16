@@ -1,9 +1,12 @@
 class Animal
   credentials do |animal|
     animal.can :clean, :self
+    animal.can :laugh, :at => :friend
   end
   
   attr_accessor :species, :hungry, :fast
+  attr_accessor :friends
+  def friends; @friends ||= []; end
   
   def initialize(species = nil, hungry = false, fast = false)
     @species = species
