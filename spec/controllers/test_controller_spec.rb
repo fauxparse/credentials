@@ -5,7 +5,7 @@ if defined?(ActionController)
     self.current_user_method = :logged_in_user
     requires_permission_to :view, :stuff, :except => [ :public ]
     requires_permission_to :break, :stuff, :only => [ :dangerous ]
-    requires_permission_to :create, :stuff, :for => :account, :only => [ :create ]
+    requires_permission_to :create, Object, :for => :account, :only => [ :create ]
   
     def index; end
     def public; end
@@ -21,13 +21,15 @@ if defined?(ActionController)
     credentials do |user|
       user.can :view, :stuff
       user.can :break, :stuff, :if => :special?
-      user.can :create, :stuff, :for => :account
+      user.can :create, Object, :for => :account
       
-      def account; end
+      attr_accessor :test_account_id
     end
   end
   
-  class TestAccount; end
+  class TestAccount
+    attr_accessor :id
+  end
   
   describe TestController do
     it "should know how to specify access credentials" do
@@ -87,7 +89,8 @@ if defined?(ActionController)
 
       it "should be able to do stuff on its own account" do
         @my_account = TestAccount.new
-        @user.stub!(:account).and_return(@my_account)
+        @my_account.id = 5
+        @user.stub!(:test_account_id).and_return(@my_account.id)
         controller.stub!(:account).and_return(@my_account)
         lambda {
           get :create
@@ -98,7 +101,9 @@ if defined?(ActionController)
       it "should not be able to do stuff on someone else's account" do
         @my_account = TestAccount.new
         @your_account = TestAccount.new
-        @user.stub!(:account).and_return(@my_account)
+        @my_account.id = 5
+        @your_account.id = 6
+        @user.stub!(:test_account_id).and_return(@my_account.id)
         controller.stub!(:account).and_return(@your_account)
         lambda {
           get :create

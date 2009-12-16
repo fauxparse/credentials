@@ -55,7 +55,7 @@ module Credentials
         case expected
         when :self then return false unless actual == args.first
         when Array then return false unless expected.any? { |item| (item === actual) || (item == :self && actual == args.first) }
-        else return false unless expected === actual
+        else return false unless expected == actual || expected === actual
         end
       end
       
@@ -104,13 +104,13 @@ module Credentials
           tr("-", "_").
           downcase
       end
-      
+
       if object.respond_to?(:id) && actual.respond_to?(:"#{lclass}_id")
-        return true if actual.send(:"#{lclass}_id") == object.id
+        return true if actual.send(:"#{lclass}_id").to_i == object.id.to_i
       end
       
       if actual.respond_to?(:id) && object.respond_to?(:"#{rclass}_id")
-        return true if object.send(:"#{rclass}_id") == actual.id
+        return true if object.send(:"#{rclass}_id").to_i == actual.id.to_i
       end
       
       (object.respond_to?(single) && (object.send(single) == actual)) || (object.respond_to?(plural) && (object.send(plural).include?(actual)))
