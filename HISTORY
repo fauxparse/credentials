@@ -1,5 +1,9 @@
 === 2.2.3 / 2009-11-27
 
+* Add support for prepositions.
+
+=== 2.2.3 / 2009-11-27
+
 * Minor fix to ActionController extension.
 
 === 2.2.2 / 2009-11-25
