@@ -18,11 +18,11 @@ module Credentials
     }.freeze
     
     def initialize(klass)
-      self.klass = klass
-      superklass = if klass.to_s =~ /^#<Class:#<([\w_]+)/ # there must be a better way
-        $1.constantize
+      if klass.to_s =~ /^#<Class:#<([\w_]+(?:\:\:[\w_]+)*)/ # there must be a better way
+        self.klass = superklass = $1.constantize
       else
-        klass.superclass
+        self.klass = klass
+        superklass = klass.superclass
       end
 
       @rules = []

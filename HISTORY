@@ -1,3 +1,7 @@
+=== 2.4.1 / 2010-01-25
+
+* Minor patch to Rulebook fo metaclass support.
+
 === 2.4.0 / 2010-01-25
 
 * Implemented Foo.metaclass.credentials { |foo| ... } to allow
