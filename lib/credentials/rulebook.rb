@@ -11,6 +11,7 @@ module Credentials
     attr_accessor :klass
     attr_accessor :options
     attr_accessor :rules
+    attr_reader :superklass_rulebook
     
     DEFAULT_OPTIONS = {
       :default => :deny
@@ -18,23 +19,28 @@ module Credentials
     
     def initialize(klass)
       self.klass = klass
-      @rules = if klass.superclass.respond_to?(:credentials) && !klass.superclass.credentials.empty?
-        klass.superclass.credentials.rules.dup
+      superklass = if klass.to_s =~ /^#<Class:#<([\w_]+)/ # there must be a better way
+        $1.constantize
       else
-        []
+        klass.superclass
       end
-      @options = {}
+
+      @rules = []
+      if superklass == Object
+        @superklass_rulebook = nil
+        @options = {}
+      else
+        @superklass_rulebook = superklass.credentials
+        @options = superklass_rulebook.options.dup
+      end
     end
 
     # Creates a Rulebook for the given class.
     # Should not be called directly: instead,
     # use +class.credentials+ (q.v.).
     def self.for(klass)
-      rulebook = new(klass)
-      if superclass && superclass.respond_to?(:credentials)
-        rulebook.rules = superclass.credentials.rules.dup
-      end
-      rulebook
+      @rulebooks ||= {}
+      @rulebooks[klass] ||= new(klass)
     end
 
     # Returns +true+ if there are no rules defined in this Rulebook.
@@ -199,11 +205,13 @@ module Credentials
     
     # Subset of rules that grant permission by exposing an +allow?+ method.
     def allow_rules
+      @allow_rules ||= (superklass_rulebook ? superklass_rulebook.allow_rules : []) + 
       rules.select { |rule| rule.respond_to? :allow? }
     end
     
     # Subset of rules that deny permission by exposing an +deny?+ method.
     def deny_rules
+      @deny_rules ||= (superklass_rulebook ? superklass_rulebook.deny_rules : []) + 
       rules.select { |rule| rule.respond_to? :deny? }
     end
   end

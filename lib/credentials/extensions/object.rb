@@ -52,9 +52,15 @@ module Credentials
     
       # Returns true if the receiver has access to the specified resource or action.
       def can?(*args)
-        self.class.credentials.allow? self, *args
+        metaclass.credentials.allow?(self, *args)
       end
       alias_method :able_to?, :can?
+      
+      def metaclass
+        class << self
+          self
+        end
+      end
 
       def self.included(receiver) #:nodoc:
         receiver.extend ClassMethods

@@ -1,4 +1,14 @@
-=== 2.2.3 / 2009-11-27
+=== 2.4.0 / 2010-01-25
+
+* Implemented Foo.metaclass.credentials { |foo| ... } to allow
+  declaration of credentials per instance. This is nice for
+  implementing RBA.
+
+=== 2.3.1 / 2009-12-17
+
+* Minor bug fix (Class !== Class)
+
+=== 2.3.0 / 2009-12-16
 
 * Add support for prepositions.
 
