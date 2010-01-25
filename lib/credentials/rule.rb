@@ -55,7 +55,7 @@ module Credentials
         case expected
         when :self then return false unless actual == args.first
         when Array then return false unless expected.any? { |item| (item === actual) || (item == :self && actual == args.first) }
-        else return false unless expected == actual || expected === actual
+        else return false unless expected == actual || expected === actual || (expected.is_a?(Class) && actual.is_a?(Class) && actual.ancestors.include?(expected))
         end
       end
       
