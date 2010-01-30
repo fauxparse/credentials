@@ -1,3 +1,7 @@
+=== 2.4.3 / 2010-01-25
+
+* Ruby 1.9 compatibility issue in ActionController extension.
+
 === 2.4.2 / 2010-01-25
 
 * Bug where class/subclass wasn't recognised as a match.
