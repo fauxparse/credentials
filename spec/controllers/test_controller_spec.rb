@@ -11,6 +11,7 @@ if defined?(ActionController)
     def public; end
     def dangerous; end
     def create; end
+    def view; end
   
     def rescue_action(e)
       raise e

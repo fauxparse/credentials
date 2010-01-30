@@ -83,7 +83,11 @@ module Credentials
           
           raise Credentials::Errors::NotLoggedInError unless current_user
           evaluated = args.map do |arg|
-            (arg.is_a?(Symbol) && respond_to?(arg) && !public_methods.include?(arg.to_s)) ? send(arg) : arg
+            if arg.is_a?(Symbol) && respond_to?(arg) && !action_named?(arg)
+              send(arg)
+            else
+              arg
+            end
           end
           
           opts = returning({}) do |hash|
@@ -97,6 +101,11 @@ module Credentials
             raise Credentials::Errors::AccessDeniedError
           end
         end
+      end
+      
+      def action_named?(method)
+        method_name = (RUBY_VERSION.to_f >= 1.9) ? method.to_sym : method.to_s
+        public_methods.include?(method_name)
       end
       
       def self.included(receiver) #:nodoc:
